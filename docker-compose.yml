@@ -1,0 +1,28 @@
+version: '1'
+
+services:
+  db:
+    images: mysql:5.7
+    volumes: 
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      
+  wordpress:
+    depends_on: 
+      - db
+    images: wordpress
+      ports:
+        - 8080:80
+      restart: always
+      volumes: ['./:/var/www/html']
+      environment:
+        WORDPESS_DB_HOST: db:3306 
+        WORDPESS_DB_USER: wordpress
+        WORDPESS_DB_PASSWORD: wordpress
+volumes:
+  db_data:
